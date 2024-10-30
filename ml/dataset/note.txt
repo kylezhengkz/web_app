@@ -1,0 +1,4 @@
+I did not include the dataset in this remote repository, as well as the pickle version
+
+You can download it here -> https://www.yelp.com/dataset/download
+You can get the pickle file by running load_data.py
