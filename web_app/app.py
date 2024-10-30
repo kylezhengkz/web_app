@@ -5,13 +5,13 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-def dummy_model(data):
+def model(data):
     return {"result": f"{data['input']}"}
 
 @app.route('/predict', methods=['POST'])
 def predict():
     data = request.json
-    prediction = dummy_model(data)
+    prediction = model(data)
     return jsonify(prediction)
 
 if __name__ == '__main__':
