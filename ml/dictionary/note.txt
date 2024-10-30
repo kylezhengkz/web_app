@@ -1,0 +1,4 @@
+I did not include glove.840B.300d.txt or embedding_dictionary.pkl in this remote repository
+
+You can find the glove.840B.300d.txt file here -> https://nlp.stanford.edu/projects/glove/
+You can then generate the embedding_dictionary.pkl file by running get_pkl.py
