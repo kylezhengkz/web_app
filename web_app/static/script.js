@@ -10,7 +10,7 @@ async function submitData() {
             },
             body: JSON.stringify({ input: inputData })
         });
-
+        console.log("Reached here");
         const result = await response.json();
         resultElement.innerText = `Prediction: ${result.result}`;
     } catch (error) {
