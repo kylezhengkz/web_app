@@ -10,7 +10,7 @@ async function submitData() {
             body: JSON.stringify({ input: inputData })
         });
         const result = await response.json();
-        resultElement.innerText = `Prediction: ${result.result}`;
+        resultElement.innerText = "Prediction: ${result.result}";
     } catch (error) {
         resultElement.innerText = "Error: Could not get prediction.";
         console.error("Error:", error);

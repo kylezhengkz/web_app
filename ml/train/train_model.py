@@ -49,7 +49,7 @@ def load_embeddings(text):
         else:
             embeddings[(i*300):((i+1)*300)] = np.zeros((300,), dtype=np.float32)
     
-    if (i < max_token_length - 1):
+    if (len(tokens) > 0 and i < max_token_length - 1):
         room_left = ((max_token_length - 1) - i)*300
         embeddings[((i+1)*300):] = np.zeros((room_left,), dtype=np.float32)
     
