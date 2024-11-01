@@ -15,7 +15,7 @@ CORS(app)
 
 def model(data):
     sentiment_score = model.predict(data)
-    return {"result": f"{data["input"]}"}
+    return {"result": sentiment_score}
 
 @app.route("/")
 def home():
