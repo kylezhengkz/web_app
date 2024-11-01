@@ -1,9 +1,8 @@
 async function submitData() {
-    const inputData = document.getElementById('inputData').value;
-    const resultElement = document.getElementById('result');
-
     try {
-        const response = await fetch('http://127.0.0.1:5000/predict', {
+        const inputData = document.getElementById('inputData').value;
+        const resultElement = document.getElementById('result');
+        const response = await fetch('/predict', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
