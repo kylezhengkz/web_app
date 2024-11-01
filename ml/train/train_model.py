@@ -11,6 +11,7 @@ from tensorflow.keras.utils import to_categorical
 from sklearn.metrics import f1_score
 import tracemalloc
 import tensorflow as tf
+import glob
 
 tracemalloc.start()
 
@@ -29,8 +30,15 @@ def tokenize(text):
     return text
 
 t0 = time.time()
-with open("../dictionary/embedding_dictionary.pkl", "rb") as f:
-    embedding_dictionary = pickle.load(f)
+embedding_dictionaries = glob.glob("../dictionary/embedding_dictionary_*")
+print(embedding_dictionaries)
+
+embedding_dictionary = {}
+for dictionary_path in embedding_dictionaries:
+    with open(dictionary_path, "rb") as f:
+        embedding_dictionary_chunk = pickle.load(f)
+        embedding_dictionary.update(embedding_dictionary_chunk)
+        print(len(embedding_dictionary))
 t1 = time.time()
 print(f"{round(t1 - t0, 3)} seconds to load embedding dictionary")
 
@@ -196,3 +204,5 @@ for i, hyperparams in enumerate(hyperparameter_combinations):
 print(f"Best combination {best_combination_index} - val loss {best_val_loss} - hyperparams {best_hyperparameters}")
 model_name = "test_model"
 best_model.save(f"../models/{model_name}.h5")
+with open(f"../models/{model_name}_hyperparams.txt", "w") as file:
+    file.write(best_hyperparameters)

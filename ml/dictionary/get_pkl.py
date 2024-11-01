@@ -65,6 +65,24 @@ with open("glove.840B.300d.txt", "r") as file:
             print(count)
 
 print(f"{len(embedding_dictionary)} tokens processed")
+
+embedding_dictionarys = []
+chunk_size = len(embedding_dictionary) // 15
+print(f"Chunk size: {chunk_size}")
+
+for i in range(15):
+    if (len(embedding_dictionary) > chunk_size):
+        chunk = dict(list(embedding_dictionary.items())[:chunk_size])
+        embedding_dictionarys.append(chunk)
+        embedding_dictionary = dict(list(embedding_dictionary.items())[chunk_size:])
+        print(len(chunk))
+        print(len(embedding_dictionary))
+    else:
+        print(len(embedding_dictionary))
+        embedding_dictionarys.append(embedding_dictionary)
         
-with open("embedding_dictionary.pkl", "wb") as file:
-    pickle.dump(embedding_dictionary, file)
+print(len(embedding_dictionarys))
+        
+for i, dictionary in enumerate(embedding_dictionarys):
+    with open(f"embedding_dictionary_{i+1}.pkl", "wb") as file:
+        pickle.dump(dictionary, file)
