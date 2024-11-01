@@ -9,6 +9,7 @@ class Model:
         self.model = model
         self.embedding_dictionary = embedding_dictionary
     
+    @staticmethod
     def __tokenize(text):
         text =  text.replace("'", "")
         text = re.sub(r"([^\w\s])", r" \1 ", text)
@@ -17,7 +18,7 @@ class Model:
         text = text.lower()
         return text
 
-    def __load_embeddings(text):
+    def __load_embeddings(self, text):
         embeddings = np.empty(Model.__max_embedding_length, dtype=np.float32)
         text = Model.__tokenize(text)
         tokens = text.split()
@@ -25,8 +26,8 @@ class Model:
         for i, token in enumerate(tokens):
             if (i >= Model.__max_token_length):
                 break
-            if (token in Model.__embedding_dictionary):
-                embeddings[(i*300):((i+1)*300)] = Model.__embedding_dictionary[token]
+            if (token in self.embedding_dictionary):
+                embeddings[(i*300):((i+1)*300)] = self.embedding_dictionary[token]
             else:
                 embeddings[(i*300):((i+1)*300)] = np.zeros((300,), dtype=np.float32)
         
@@ -36,12 +37,12 @@ class Model:
         
         return embeddings
     
-    def predict(review):
-        embeddings = Model.__load_embeddings(Model.__tokenize(review))
+    def predict(self, review):
+        embeddings = self.__load_embeddings(Model.__tokenize(review))
         X = []
         X.append(embeddings)
         X = np.array(X, dtype=np.float32)
             
-        sentiment_score = Model.model.predict(X)[0][0]
+        sentiment_score = self.model.predict(X)[0][0]
         sentiment_score = "%.2f" % sentiment_score
         return sentiment_score

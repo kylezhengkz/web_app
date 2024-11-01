@@ -13,10 +13,6 @@ myModel = Model(model, embedding_dictionary)
 app = Flask(__name__)
 CORS(app)
 
-def model(data):
-    sentiment_score = model.predict(data)
-    return {"result": sentiment_score}
-
 @app.route("/")
 def home():
     return render_template("index.html")
@@ -24,7 +20,7 @@ def home():
 @app.route("/predict", methods=["POST"])
 def predict():
     data = request.json
-    prediction = model(data)
+    prediction = myModel.predict(data["input"])
     return jsonify(prediction)
 
 if __name__ == "__main__":
