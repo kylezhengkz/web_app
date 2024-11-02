@@ -11,7 +11,7 @@ class Model:
     __max_embedding_length = __max_token_length * 300
     
     @staticmethod
-    def __construct_model(npy_files):
+    def __construct_model():
         model = Sequential()
         model.add(Input(shape=(Model.__max_embedding_length,)))
         model.add(Dense(units=256))
@@ -28,7 +28,6 @@ class Model:
         model.add(Dense(units=16))
         model.add(Activation("relu"))
         model.add(Dense(1, activation="linear"))
-        model.summary()
 
         for i, layer in enumerate(model.layers):
             weights = []
@@ -45,7 +44,7 @@ class Model:
         return model
     
     @staticmethod
-    def __construct_embedding_dictionary(dictionary_files):
+    def __construct_embedding_dictionary():
         embedding_dictionaries = glob.glob("resources/dictionaries/embedding_dictionary_*")
         embedding_dictionary = {}
         for dictionary_path in embedding_dictionaries:

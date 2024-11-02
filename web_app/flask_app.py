@@ -1,13 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
-import pickle
-from tensorflow.keras.models import load_model
 from model import Model
 
-model = load_model("resources/test_model.h5")
-with open("resources/embedding_dictionary.pkl", "rb") as f:
-    embedding_dictionary = pickle.load(f)
-    
 myModel = Model()
 
 app = Flask(__name__)
