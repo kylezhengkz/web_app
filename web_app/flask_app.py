@@ -8,7 +8,7 @@ model = load_model("resources/test_model.h5")
 with open("resources/embedding_dictionary.pkl", "rb") as f:
     embedding_dictionary = pickle.load(f)
     
-myModel = Model(model, embedding_dictionary)
+myModel = Model()
 
 app = Flask(__name__)
 CORS(app)

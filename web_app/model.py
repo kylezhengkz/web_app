@@ -1,13 +1,62 @@
 import re
 import numpy as np
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import Input, Dense, Dropout, BatchNormalization, Activation
+import glob
+import pickle
 
 class Model:
     __max_token_length = 250
     __max_embedding_length = __max_token_length * 300
     
-    def __init__(self, model, embedding_dictionary):
-        self.model = model
-        self.embedding_dictionary = embedding_dictionary
+    @staticmethod
+    def __construct_model(npy_files):
+        model = Sequential()
+        model.add(Input(shape=(Model.__max_embedding_length,)))
+        model.add(Dense(units=256))
+        model.add(BatchNormalization())
+        model.add(Activation("relu"))
+        model.add(Dropout(rate=0.5))
+        model.add(Dense(units=128))
+        model.add(Activation("relu"))
+        model.add(Dropout(rate=0.25))
+        model.add(Dense(units=64))
+        model.add(Activation("relu"))
+        model.add(Dense(units=32))
+        model.add(Activation("relu"))
+        model.add(Dense(units=16))
+        model.add(Activation("relu"))
+        model.add(Dense(1, activation="linear"))
+        model.summary()
+
+        for i, layer in enumerate(model.layers):
+            weights = []
+            weight_index = 1
+            while True:
+                try:
+                    weight = np.load(f"resources/npy/layer_{i+1}_weight_{weight_index}.npy")
+                    weights.append(weight)
+                    weight_index += 1
+                except FileNotFoundError:
+                    break
+            if weights:
+                layer.set_weights(weights)
+        return model
+    
+    @staticmethod
+    def __construct_embedding_dictionary(dictionary_files):
+        embedding_dictionaries = glob.glob("resources/dictionaries/embedding_dictionary_*")
+        embedding_dictionary = {}
+        for dictionary_path in embedding_dictionaries:
+            with open(dictionary_path, "rb") as f:
+                embedding_dictionary_chunk = pickle.load(f)
+                embedding_dictionary.update(embedding_dictionary_chunk)
+        return embedding_dictionary
+    
+    def __init__(self):
+        self.model = Model.__construct_model()
+        self.embedding_dictionary = Model.__construct_embedding_dictionary()
     
     @staticmethod
     def __tokenize(text):
